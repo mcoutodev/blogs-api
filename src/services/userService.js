@@ -15,13 +15,20 @@ const store = async ({ displayName, email, password, image = '' }) => {
 };
 
 const findAll = async () => {
-    const users = (await User.findAll()).map(
-        ({ id, displayName, email, image }) => ({ id, displayName, email, image }),
-    );
+    const users = await User.findAll({ attributes: { exclude: ['password'] } });
     return { type: null, message: users };
+};
+
+const findById = async (userId) => {
+    const user = await User.findByPk(userId, {
+        attributes: { exclude: ['password'] },
+    });
+    if (!user) return { type: 'NOT_FOUND', message: 'User does not exist' };
+    return { type: null, message: user };
 };
 
 module.exports = {
     store,
     findAll,
+    findById,
 };
