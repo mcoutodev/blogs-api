@@ -1,11 +1,11 @@
 const loginService = require('./loginService');
 const userService = require('./userService');
 const categoryService = require('./categoryService');
-const postService = require('./postService');
+const blogPostService = require('./blogPostService');
 
 module.exports = {
     loginService,
     userService,
     categoryService,
-    postService,
+    blogPostService,
 };
