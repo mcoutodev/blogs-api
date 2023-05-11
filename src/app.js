@@ -14,7 +14,7 @@ app.use('/user', userRoutes);
 
 // não remova ou mova esse endpoint
 app.get('/', (_request, response) => {
-  response.send();
+    response.send();
 });
 
 app.use(express.json());

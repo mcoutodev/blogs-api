@@ -7,6 +7,12 @@ const store = async (req, res) => {
     res.status(201).json({ token: message });
 };
 
+const findAll = async (_req, res) => {
+    const { message } = await userService.findAll();
+    res.status(200).json(message);
+};
+
 module.exports = {
     store,
+    findAll,
 };
