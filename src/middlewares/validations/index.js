@@ -1,4 +1,4 @@
-const { loginSchema, userSchema } = require('./schemas');
+const { loginSchema, userSchema, categorySchema } = require('./schemas');
 
 const login = async (req, res, next) => {
     const { error } = loginSchema.validate(req.body);
@@ -18,7 +18,16 @@ const user = async (req, res, next) => {
     next();
 };
 
+const category = (req, res, next) => {
+    const { error } = categorySchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ message: '"name" is required' });
+    }
+    next();
+};
+
 module.exports = {
     login,
     user,
+    category,
 };
