@@ -8,7 +8,8 @@ module.exports = (req, res, next) => {
         return res.status(401).json({ message: 'Token not found' });
     }
     try {
-        jwt.verify(token, JWT_SECRET);
+        const payload = jwt.verify(token, JWT_SECRET);
+        req.user = payload;
         return next();
     } catch (err) {
         return res.status(401).json({ message: 'Expired or invalid token' });
