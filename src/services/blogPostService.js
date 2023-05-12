@@ -108,10 +108,27 @@ const destroy = async ({ postId, email }) => {
     return { type: null, message: null };
 };
 
+const findByQuery = async (searchTerm) => {
+    const blogPosts = await BlogPost.findAll({
+        where: {
+            [Op.or]: [
+                { title: { [Op.like]: `%${searchTerm}%` } },
+                { content: { [Op.like]: `%${searchTerm}%` } },
+            ],
+        },
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+    return { type: null, message: blogPosts };
+};
+
 module.exports = {
     store,
     findAll,
     findById,
     update,
     destroy,
+    findByQuery,
 };

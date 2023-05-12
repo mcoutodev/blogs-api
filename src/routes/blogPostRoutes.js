@@ -7,6 +7,8 @@ router.post('/', auth, validation.newBlogPost, blogPostController.store);
 
 router.get('/', auth, blogPostController.findAll);
 
+router.get('/search', auth, blogPostController.findByQuery);
+
 router.get('/:id', auth, blogPostController.findById);
 
 router.put('/:id', auth, validation.updateBlogPost, blogPostController.update);
