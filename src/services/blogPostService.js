@@ -58,7 +58,21 @@ const findAll = async () => {
     return { type: null, message: blogPosts };
 };
 
+const findById = async (postId) => {
+    const blogPost = await BlogPost.findByPk(postId, {
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+    if (!blogPost) {
+        return { type: 'NOT_FOUND', message: 'Post does not exist' };
+    }
+    return { type: null, message: blogPost };
+};
+
 module.exports = {
     store,
     findAll,
+    findById,
 };
