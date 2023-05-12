@@ -71,8 +71,39 @@ const findById = async (postId) => {
     return { type: null, message: blogPost };
 };
 
+const isValidUpdate = async ({ postId, email }) => {
+    const blogPost = await BlogPost.findByPk(postId);
+    if (!blogPost) {
+        return { type: 'NOT_FOUND', message: 'Post does not exist' };
+    }
+    const userId = await User.findOne({ where: { email } }).then(
+        (user) => user.id,
+    );
+    if (blogPost.userId !== userId) {
+        return {
+            type: 'UNAUTHORIZED',
+            message: 'Unauthorized user',
+        };
+    }
+    return { type: null, message: null };
+};
+
+const update = async ({ title, content, postId, email }) => {
+    const { type, message } = await isValidUpdate({ postId, email });
+    if (type) return { type, message };
+    await BlogPost.update({ title, content }, { where: { id: postId } });
+    const updatedBlogPost = await BlogPost.findByPk(postId, {
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+    return { type: null, message: updatedBlogPost };
+};
+
 module.exports = {
     store,
     findAll,
     findById,
+    update,
 };

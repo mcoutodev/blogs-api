@@ -2,7 +2,8 @@ const {
     loginSchema,
     userSchema,
     categorySchema,
-    blogPostSchema,
+    newBlogPostSchema,
+    updateBlogPostSchema,
 } = require('./schemas');
 
 const login = async (req, res, next) => {
@@ -31,8 +32,18 @@ const category = async (req, res, next) => {
     next();
 };
 
-const blogPost = async (req, res, next) => {
-    const { error } = blogPostSchema.validate(req.body);
+const newBlogPost = async (req, res, next) => {
+    const { error } = newBlogPostSchema.validate(req.body);
+    if (error) {
+        return res
+            .status(400)
+            .json({ message: 'Some required fields are missing' });
+    }
+    next();
+};
+
+const updateBlogPost = async (req, res, next) => {
+    const { error } = updateBlogPostSchema.validate(req.body);
     if (error) {
         return res
             .status(400)
@@ -45,5 +56,6 @@ module.exports = {
     login,
     user,
     category,
-    blogPost,
+    newBlogPost,
+    updateBlogPost,
 };
