@@ -36,9 +36,18 @@ const update = async (req, res) => {
     res.status(200).json(message);
 };
 
+const destroy = async (req, res) => {
+    const { email } = req.user;
+    const { id } = req.params;
+    const { type, message } = await blogPostService.destroy({ postId: id, email });
+    if (type) return res.status(errorMap.mapError(type)).json({ message });
+    return res.status(204).end();
+};
+
 module.exports = {
     store,
     findAll,
     findById,
     update,
+    destroy,
 };

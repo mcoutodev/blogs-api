@@ -101,9 +101,17 @@ const update = async ({ title, content, postId, email }) => {
     return { type: null, message: updatedBlogPost };
 };
 
+const destroy = async ({ postId, email }) => {
+    const { type, message } = await isValidUpdate({ postId, email });
+    if (type) return { type, message };
+    await BlogPost.destroy({ where: { id: postId } });
+    return { type: null, message: null };
+};
+
 module.exports = {
     store,
     findAll,
     findById,
     update,
+    destroy,
 };
