@@ -19,8 +19,15 @@ const findById = async (req, res) => {
     res.status(200).json(message);
 };
 
+const destroy = async (req, res) => {
+    const { email } = req.user;
+    await userService.destroy(email);
+    return res.status(204).end();
+};
+
 module.exports = {
     store,
     findAll,
     findById,
+    destroy,
 };

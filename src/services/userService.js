@@ -27,8 +27,11 @@ const findById = async (userId) => {
     return { type: null, message: user };
 };
 
+const destroy = async (email) => User.destroy({ where: { email } });
+
 module.exports = {
     store,
     findAll,
     findById,
+    destroy,
 };
