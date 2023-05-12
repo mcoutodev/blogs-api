@@ -48,6 +48,17 @@ const store = async ({ title, content, email, categoryIds }) => {
     return { type: null, message: result };
 };
 
+const findAll = async () => {
+    const blogPosts = await BlogPost.findAll({
+        include: [
+            { model: User, as: 'user', attributes: { exclude: ['password'] } },
+            { model: Category, as: 'categories', through: { attributes: [] } },
+        ],
+    });
+    return { type: null, message: blogPosts };
+};
+
 module.exports = {
     store,
+    findAll,
 };
